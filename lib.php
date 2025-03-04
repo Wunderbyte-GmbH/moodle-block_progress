@@ -1368,6 +1368,10 @@ function block_progress_attempts($modules, $config, $events, $userid, $course) {
                           $module['defaultAction'];
                 $query = $module['actions'][$action];
             }
+            if ($event['type'] === 'questionnaire') {
+                $query = "SELECT id FROM {questionnaire_response} 
+                     WHERE complete = 'y' AND userid = :userid AND questionnaireid = :eventid";
+            }
 
             // Check if the user has attempted the module.
             $attempts[$uniqueid] = $DB->record_exists_sql($query, $parameters) ? true : false;
